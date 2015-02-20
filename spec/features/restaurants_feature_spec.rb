@@ -11,17 +11,14 @@ feature 'restaurants' do
   end
 
   context 'restaurants have been added' do
-    
     before do
       Restaurant.create(name: 'Art of the Table')
     end
-
     scenario 'display restaurants' do
       visit '/restaurants'
       expect(page).to have_content 'Art of the Table'
       expect(page).not_to have_content 'No restaurants'
     end
-
   end
 
   context 'creating restaurants' do
@@ -32,6 +29,16 @@ feature 'restaurants' do
       click_button 'Create Restaurant'
       expect(page).to have_content 'Art of the Table'
       expect(current_path).to eq '/restaurants'
+    end
+  end
+
+  context 'viewing restaurants' do
+    let!(:boka){Restaurant.create(name:'BOKA')}
+    scenario 'lets a user view a restaurant' do
+      visit '/restaurants'
+      click_link 'BOKA'
+      expect(page).to have_content 'BOKA'
+      expect(current_path).to eq "/restaurants/#{boka.id}"
     end
   end
 
