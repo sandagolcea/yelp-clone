@@ -54,4 +54,14 @@ feature 'restaurants' do
     end
   end
 
+  context 'deleting restaurants' do
+    before {Restaurant.create  name: 'Coq au Vin'}
+    scenario 'removes a restaurant on delete link click' do
+      visit '/restaurants'
+      click_link 'Delete Coq au Vin'
+      expect(page).not_to have_content 'Coq au Vin'
+      expect(page).to have_content 'Restaurant deleted'
+    end
+  end
+
 end
